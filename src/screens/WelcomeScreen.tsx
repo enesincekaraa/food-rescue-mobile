@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 
-// Props tipi — Navigation nereye gideceğini biliyor
 type Props = {
   navigation: any
 }
@@ -31,7 +30,16 @@ export default function WelcomeScreen({ navigation }: Props) {
         >
           <Text style={styles.buttonOutlineText}>İlan Oluştur</Text>
         </TouchableOpacity>
+        
+       <TouchableOpacity
+          style={[styles.button, styles.buttonMap]}
+          onPress={() => navigation.navigate('Map')}
+       >
+        <Text style={styles.buttonText}>🗺️ Haritada Gör</Text>
+        </TouchableOpacity>
       </View>
+
+      
 
     </View>
   )
@@ -74,6 +82,9 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
+  },
+  buttonMap:{
+  backgroundColor: '#185FA5',
   },
   buttonText: {
     color: '#fff',
