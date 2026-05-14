@@ -1,20 +1,38 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import WelcomeScreen from './src/screens/WelcomeScreen'
+import ListingsScreen from './src/screens/ListingsScreen'
+import CreateListingScreen from './src/screens/CreateListingScreen'
+
+const Stack = createNativeStackNavigator()
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Welcome"
+        screenOptions={{
+          headerStyle: { backgroundColor: '#1D9E75' },
+          headerTintColor: '#fff',
+          headerTitleStyle: { fontWeight: '600' },
+        }}
+      >
+        <Stack.Screen
+          name="Welcome"
+          component={WelcomeScreen}
+          options={{ title: '🍱 FoodRescue', headerShown: false }}
+        />
+        <Stack.Screen
+          name="Listings"
+          component={ListingsScreen}
+          options={{ title: 'Mevcut İlanlar' }}
+        />
+        <Stack.Screen
+          name="CreateListing"
+          component={CreateListingScreen}
+          options={{ title: 'İlan Oluştur' }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
