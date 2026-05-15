@@ -1,37 +1,34 @@
 import axios from 'axios'
 import { FoodListing, CreateListingRequest, User } from '../types'
 
-// Backend URL — kendi IP adresin
-const BASE_URL = 'http://172.2.0.81:8082'
-const USER_URL = 'http://172.2.0.81:8081'
+const BASE_URL = 'http://192.168.1.107:8082'
+const USER_SERVICE_URL = 'http://192.168.1.107:8081'
+const ANALYTICS_URL = 'http://192.168.1.107:8085'
+
 
 const api = axios.create({
   baseURL: BASE_URL,
-  timeout: 10000,
+  timeout: 30000,  // 30 saniyeye çıkardık
   headers: {
     'Content-Type': 'application/json',
   },
 })
 
 const userApi = axios.create({
-  baseURL: USER_URL,
-  timeout: 10000,
+  baseURL: USER_SERVICE_URL,
+  timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
   },
 })
 
-// ─── İlan API'leri ────────────────────────────────────
-
 export const listingApi = {
 
-  // Mevcut ilanları getir
   getAvailable: async (): Promise<FoodListing[]> => {
     const response = await api.get('/api/listings/available')
     return response.data
   },
 
-  // Yakındaki ilanları getir
   getNearby: async (
     latitude: number,
     longitude: number,
@@ -43,7 +40,6 @@ export const listingApi = {
     return response.data
   },
 
-  // İlan oluştur
   create: async (
     request: CreateListingRequest
   ): Promise<FoodListing> => {
@@ -51,7 +47,6 @@ export const listingApi = {
     return response.data
   },
 
-  // Rezervasyon yap
   reserve: async (
     listingId: string,
     userId: string
@@ -64,8 +59,6 @@ export const listingApi = {
   },
 }
 
-// ─── Kullanıcı API'leri ───────────────────────────────
-
 export const userApi2 = {
 
   getDonors: async (): Promise<User[]> => {
@@ -75,6 +68,33 @@ export const userApi2 = {
 
   getRecipients: async (): Promise<User[]> => {
     const response = await userApi.get('/api/users/type/RECIPIENT')
+    return response.data
+  },
+}
+
+
+
+
+const analyticsApi = axios.create({
+  baseURL: ANALYTICS_URL,
+  timeout: 30000,
+  headers: { 'Content-Type': 'application/json' },
+})
+
+export const analyticsApi2 = {
+
+  getDashboard: async () => {
+    const response = await analyticsApi.get('/api/analytics/dashboard')
+    return response.data
+  },
+
+  getTopDonors: async () => {
+    const response = await analyticsApi.get('/api/analytics/donors/top')
+    return response.data
+  },
+
+  getCityRankings: async () => {
+    const response = await analyticsApi.get('/api/analytics/cities')
     return response.data
   },
 }

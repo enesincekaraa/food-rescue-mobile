@@ -6,7 +6,7 @@ import {
 import { listingApi } from '../services/api'
 
 // Şimdilik sabit donor ID — ileride auth ekleyeceğiz
-const TEMP_DONOR_ID = 'b1ccebc1-e96a-4f04-bba9-70a17b621377'
+const TEMP_DONOR_ID = 'd974dad2-c8be-43a4-b78a-2ec210a5b69a'
 
 export default function CreateListingScreen({ navigation }: any) {
   const [title, setTitle] = useState('')
@@ -38,8 +38,8 @@ export default function CreateListingScreen({ navigation }: any) {
       Alert.alert('Başarılı!', 'İlanınız oluşturuldu', [
         { text: 'Tamam', onPress: () => navigation.navigate('Listings') }
       ])
-    } catch (err) {
-      Alert.alert('Hata', 'İlan oluşturulamadı. Backend çalışıyor mu?')
+    } catch (err:any) {
+      Alert.alert('Hata', err?.message || JSON.stringify(err))
     } finally {
       setLoading(false)
     }

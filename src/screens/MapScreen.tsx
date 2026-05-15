@@ -7,7 +7,7 @@ import MapView, { Marker, Callout, Region } from 'react-native-maps'
 import { listingApi } from '../services/api'
 import { FoodListing } from '../types'
 
-const TEMP_RECIPIENT_ID = '493f7e26-f516-48ce-b50f-087883b524d2'
+const TEMP_RECIPIENT_ID = 'aec0d025-bab0-482a-b837-15a602c61155'
 
 // İstanbul merkezi
 const ISTANBUL = {

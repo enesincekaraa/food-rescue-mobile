@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import {
   StyleSheet, Text, View, FlatList,
   TouchableOpacity, ActivityIndicator,
   RefreshControl, Alert
 } from 'react-native'
+import { useFocusEffect } from '@react-navigation/native'
 import { listingApi } from '../services/api'
 import { FoodListing } from '../types'
 
-const TEMP_RECIPIENT_ID = '493f7e26-f516-48ce-b50f-087883b524d2'
+const TEMP_RECIPIENT_ID = 'aec0d025-bab0-482a-b837-15a602c61155'
 
 export default function ListingsScreen() {
   const [listings, setListings] = useState<FoodListing[]>([])
@@ -15,6 +16,13 @@ export default function ListingsScreen() {
   const [refreshing, setRefreshing] = useState(false)
   const [reserving, setReserving] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+
+  // Ekran her açıldığında yenile
+  useFocusEffect(
+    useCallback(() => {
+      fetchListings()
+    }, [])
+  )
 
   useEffect(() => {
     fetchListings()
@@ -47,8 +55,8 @@ export default function ListingsScreen() {
         'İlanı rezerve ettiniz. Lütfen belirtilen adresten alın.',
         [{ text: 'Tamam', onPress: fetchListings }]
       )
-    } catch (err) {
-      Alert.alert('Hata', 'Rezervasyon yapılamadı.')
+    } catch (err: any) {
+      Alert.alert('Hata', err?.message || 'Rezervasyon yapılamadı.')
     } finally {
       setReserving(null)
     }
@@ -88,7 +96,10 @@ export default function ListingsScreen() {
       }
       ListEmptyComponent={
         <View style={styles.center}>
-          <Text style={styles.emptyText}>Şu an ilan yok</Text>
+          <Text style={styles.emptyText}>Şu an ilan yok 🎉</Text>
+          <Text style={styles.emptySubText}>
+            Tüm ilanlar rezerve edildi!
+          </Text>
         </View>
       }
       renderItem={({ item }) => (
@@ -137,6 +148,7 @@ const styles = StyleSheet.create({
   list: {
     padding: 16,
     gap: 12,
+    flexGrow: 1,
   },
   center: {
     flex: 1,
@@ -166,8 +178,14 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   emptyText: {
+    color: '#1a1a1a',
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  emptySubText: {
     color: '#888',
-    fontSize: 16,
+    fontSize: 14,
   },
   card: {
     backgroundColor: '#fff',
